@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<title>Tony 7s</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta name="apple-mobile-web-app-capable"
+content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style"
+content="black">
+
+<meta name="apple-mobile-web-app-title"
+content="Tony 7s">
+
+<link rel="apple-touch-icon"
+href="https://i.postimg.cc/Hs5hy9wf/IMG-1775.jpg">
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#000;
+  color:#fff;
+  min-height:100vh;
+}
+
+/* ================= LOGIN ================= */
+
+#loginScreen{
+  width:100%;
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px 14px;
+
+  background:#02030a;
+
+  background-image:
+    radial-gradient(
+      circle at top,
+      #10204a 0,
+      transparent 60%
+    );
+}
+
+.login-wrapper{
+  width:100%;
+}
+
+.login-toast{
+  background:#07140b;
+  border-radius:14px;
+  padding:8px 12px;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  margin-bottom:10px;
+
+  border:1px solid #199b38;
+
+  box-shadow:
+    0 0 10px rgba(0,0,0,.8);
+
+  font-size:13px;
+}
+
+.login-toast.hidden{
+  display:none;
+}
+
+.login-toast-icon{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#199b38;
+}
+
+.login-card{
+  width:100%;
+
+  background:#050914;
+
+  border-radius:22px;
+
+  border:1px solid #242a3a;
+
+  padding:18px 16px 20px;
+
+  box-shadow:
+    0 0 22px rgba(0,0,0,.9);
+}
+
+.login-profile{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+.login-avatar-wrap{
+  display:inline-flex;
+
+  padding:3px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #1e6bff,
+      #000
+    );
+
+  box-shadow:
+    0 0 16px
+    rgba(46,115,255,.8);
+}
+
+.login-avatar{
+  width:70px;
+  height:70px;
+
+  border-radius:50%;
+
+  background-size:cover;
+  background-position:center;
+
+  background-image:url(
+    "https://i.postimg.cc/Hs5hy9wf/IMG-1775.jpg"
+  );
+}
+
+.login-name{
+  margin-top:8px;
+
+  font-size:18px;
+  font-weight:600;
+
+  color:#3b82ff;
+}
+
+.login-subtitle{
+  margin-top:3px;
+
+  font-size:12px;
+
+  color:#a9b1c8;
+}
+
+.login-label{
+  font-size:13px;
+
+  margin-bottom:4px;
+  margin-top:10px;
+}
+
+.login-input-box{
+  background:#02040b;
+
+  border-radius:12px;
+
+  border:1px solid #2a3040;
+
+  padding:8px 10px;
+
+  margin-bottom:10px;
+}
+
+.login-input{
+  width:100%;
+
+  border:none;
+
+  background:transparent;
+
+  color:#fff;
+
+  font-size:13px;
+
+  outline:none;
+}
+
+.login-input::placeholder{
+  color:#777;
+}
+
+.login-btn-main{
+  width:100%;
+
+  padding:11px;
+
+  border-radius:18px;
+
+  border:none;
+
+  background:#215dff;
+
+  color:#fff;
+
+  font-weight:600;
+
+  font-size:14px;
+
+  cursor:pointer;
+
+  margin-top:6px;
+}
+
+.login-btn-main.disabled{
+  opacity:.6;
+  cursor:default;
+}
+
+.login-msg{
+  margin-top:8px;
+
+  font-size:12px;
+
+  min-height:16px;
+
+  text-align:center;
+}
+
+.login-msg.error{
+  color:#ff395e;
+}
+
+.login-msg.ok{
+  color:#39c96a;
+}
+
+.key-info{
+  margin-top:14px;
+
+  background:#050b08;
+
+  border-radius:14px;
+
+  border:1px solid #1e3a23;
+
+  padding:10px;
+
+  font-size:12px;
+}
+
+.key-info-title{
+  color:#7ed87e;
+
+  margin-bottom:4px;
+
+  font-weight:600;
+}
+
+.key-date{
+  color:#5ef45e;
+
+  margin-bottom:2px;
+}
+
+.key-remaining{
+  color:#e0e0e0;
+}
+
+/* ================= MAIN ================= */
+
+#mainApp{
+  width:100%;
+
+  max-width:480px;
+
+  margin:0 auto;
+
+  min-height:100vh;
+
+  display:none;
+
+  padding:16px 14px 24px;
+
+  background:#000;
+}
+
+.profile{
+  text-align:center;
+
+  margin-bottom:18px;
+  margin-top:16px;
+}
+
+.avatar-wrapper{
+  display:inline-flex;
+
+  padding:3px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #1e6bff,
+      #000
+    );
+
+  box-shadow:
+    0 0 16px
+    rgba(46,115,255,.8);
+}
+
+.avatar{
+  width:86px;
+  height:86px;
+
+  border-radius:50%;
+
+  background-size:cover;
+  background-position:center;
+
+  background-image:url(
+    "https://i.postimg.cc/Hs5hy9wf/IMG-1775.jpg"
+  );
+}
+
+.profile-name{
+  margin-top:8px;
+
+  font-size:18px;
+
+  font-weight:600;
+
+  color:#3b82ff;
+}
+
+.profile-copy{
+  margin-top:3px;
+
+  font-size:12px;
+
+  color:#aaa;
+}
+
+.code-info{
+  margin-top:2px;
+
+  font-size:12px;
+
+  color:#a9b1ff;
+}
+
+.time-left{
+  margin-top:2px;
+
+  font-size:12px;
+
+  color:#ffd86a;
+}
+
+/* ================= TABS ================= */
+
+.tabs{
+  display:flex;
+
+  margin-top:18px;
+  margin-bottom:16px;
+
+  border-radius:16px;
+
+  overflow:hidden;
+
+  background:#0c0f1a;
+}
+
+.tab{
+  flex:1;
+
+  padding:10px 0;
+
+  text-align:center;
+
+  font-size:13px;
+
+  font-weight:600;
+
+  cursor:pointer;
+}
+
+.tab.active{
+  background:#215dff;
+  color:#fff;
+}
+
+.tab:not(.active){
+  background:#141821;
+  color:#bbb;
+}
+
+.tab-content{
+  display:none;
+}
+
+.tab-content.active{
+  display:block;
+}
+
+/* ================= OPTIONS ================= */
+
+.section-title{
+  font-size:16px;
+
+  font-weight:600;
+
+  margin-bottom:10px;
+}
+
+.card-option{
+  background:#050914;
+
+  border-radius:18px;
+
+  border:1px solid #242a3a;
+
+  padding:10px 12px;
+
+  margin-bottom:10px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+.icon-box{
+  width:42px;
+  height:42px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0035ff,
+      #00146b
+    );
+
+  flex-shrink:0;
+}
+
+.opt-text{
+  flex:1;
+}
+
+.opt-title{
+  font-size:14px;
+
+  font-weight:600;
+}
+
+.opt-sub{
+  font-size:11px;
+
+  color:#acb3d5;
+
+  margin-top:3px;
+}
+
+/* ================= SWITCH ================= */
+
+.switch{
+  position:relative;
+
+  width:44px;
+  height:24px;
+
+  flex-shrink:0;
+}
+
+.switch input{
+  opacity:0;
+
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+
+  cursor:pointer;
+
+  inset:0;
+
+  background:#202535;
+
+  border-radius:999px;
+
+  transition:.3s;
+}
+
+.slider:before{
+  position:absolute;
+
+  content:"";
+
+  height:18px;
+  width:18px;
+
+  left:3px;
+  top:3px;
+
+  background:#fff;
+
+  border-radius:50%;
+
+  transition:.3s;
+}
+
+.switch input:checked + .slider{
+  background:#2364ff;
+}
+
+.switch input:checked + .slider:before{
+  transform:translateX(20px);
+}
+
+/* ================= BUTTONS ================= */
+
+.bottom-buttons{
+  margin-top:16px;
+}
+
+.main-btn{
+  width:100%;
+
+  padding:10px;
+
+  border-radius:22px;
+
+  border:none;
+
+  margin-bottom:8px;
+
+  background:#215dff;
+
+  color:#fff;
+
+  font-weight:600;
+
+  font-size:13px;
+
+  cursor:pointer;
+}
+
+.main-btn:last-child{
+  margin-bottom:0;
+
+  background:#1333a2;
+}
+
+.small-btn{
+  width:100%;
+
+  padding:8px;
+
+  border-radius:18px;
+
+  border:1px solid #333a50;
+
+  background:#050914;
+
+  color:#b6bedf;
+
+  font-size:12px;
+
+  cursor:pointer;
+
+  margin-top:10px;
+}
+
+/* ================= INFO ================= */
+
+.info-card{
+  background:#171727;
+
+  border-radius:18px;
+
+  padding:14px 16px;
+
+  margin-bottom:10px;
+
+  border:2px solid #7514b5;
+}
+
+.info-label{
+  font-size:15px;
+
+  font-weight:700;
+
+  color:#d121ff;
+
+  margin-bottom:6px;
+}
+
+.info-value{
+  font-size:14px;
+
+  color:#fff;
+}
+
+.info-msg{
+  margin-top:8px;
+
+  font-size:12px;
+
+  min-height:16px;
+
+  text-align:center;
+
+  color:#ff395e;
+}
+
+/* ================= MODAL ================= */
+
+.overlay{
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(0,0,0,.7);
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  z-index:20;
+}
+
+.modal{
+  background:#101015;
+
+  padding:20px;
+
+  border-radius:16px;
+
+  width:80%;
+
+  max-width:280px;
+
+  text-align:center;
+
+  box-shadow:
+    0 0 25px
+    rgba(0,0,0,.8);
+}
+
+.modal-title{
+  font-size:18px;
+
+  margin-bottom:12px;
+}
+
+.modal-text{
+  font-size:13px;
+
+  margin-bottom:18px;
+
+  line-height:1.4;
+}
+
+.modal-buttons{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+}
+
+.btn{
+  padding:8px;
+
+  border-radius:18px;
+
+  border:none;
+
+  cursor:pointer;
+
+  font-size:13px;
+
+  font-weight:600;
+}
+
+.btn-primary{
+  background:#3b9cff;
+
+  color:#fff;
+}
+
+.btn-secondary{
+  background:#30303a;
+
+  color:#fff;
+}
+
+.loading-bar{
+  width:100%;
+
+  height:4px;
+
+  background:#30303a;
+
+  border-radius:999px;
+
+  overflow:hidden;
+
+  margin-top:12px;
+}
+
+.loading-bar-inner{
+  height:100%;
+
+  background:#fff;
+
+  width:0%;
+
+  animation:loading 3s linear forwards;
+}
+
+@keyframes loading{
+
+  from{
+    width:0%;
+  }
+
+  to{
+    width:100%;
+  }
+
+}
+
+.success .modal-footer{
+  margin-top:14px;
+}
+
+.success-ok{
+  background:#39c96a;
+
+  color:#fff;
+
+  padding:8px 0;
+
+  width:100%;
+
+  border:none;
+
+  border-radius:18px;
+
+  font-weight:600;
+
+  cursor:pointer;
+}
+
+/* ================= VALIDATION ================= */
+
+#topValidando{
+  position:fixed;
+
+  top:12px;
+
+  left:50%;
+
+  transform:translateX(-50%);
+
+  background:#071225;
+
+  border-radius:14px;
+
+  padding:8px 14px;
+
+  font-size:13px;
+
+  border:1px solid #2850ff;
+
+  box-shadow:
+    0 0 12px
+    rgba(0,0,0,.8);
+
+  display:none;
+
+  z-index:30;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= VALIDATION ================= -->
+
+<div id="topValidando">
+  Validando...
+</div>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="loginScreen">
+
+  <div class="login-wrapper">
+
+    <div
+      id="loginToast"
+      class="login-toast hidden">
+
+      <div class="login-toast-icon"></div>
+
+      <div>
+        Acesso liberado!
+      </div>
+
+    </div>
+
+    <div class="login-card">
+
+      <div class="login-profile">
+
+        <div class="login-avatar-wrap">
+
+          <div class="login-avatar"></div>
+
+        </div>
+
+        <div class="login-name">
+          Tony 7s
+        </div>
+
+        <div class="login-subtitle">
+          Digite sua senha para continuar
+        </div>
+
+      </div>
+
+      <div class="login-label">
+        Senha de Acesso
+      </div>
+
+      <div class="login-input-box">
+
+        <input
+          id="codeInput"
+          class="login-input"
+          type="password"
+          placeholder="Digite sua senha"
+          autocomplete="off"
+        >
+
+      </div>
+
+      <button
+        id="loginBtn"
+        class="login-btn-main">
+
+        ENTRAR
+
+      </button>
+
+      <div
+        id="loginMsg"
+        class="login-msg">
+      </div>
+
+      <div
+        id="keyInfo"
+        class="key-info"
+        style="display:none;">
+
+        <div class="key-info-title">
+          VALIDADE
+        </div>
+
+        <div
+          id="keyDate"
+          class="key-date">
+        </div>
+
+        <div
+          id="keyRemaining"
+          class="key-remaining">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= MAIN APP ================= -->
+
+<div id="mainApp">
+
+  <div class="profile">
+
+    <div class="avatar-wrapper">
+
+      <div class="avatar"></div>
+
+    </div>
+
+    <div class="profile-name">
+      Tony 7s
+    </div>
+
+    <div class="profile-copy">
+      copyright : Tony 7s
+    </div>
+
+    <div class="code-info">
+      Código usado:
+      <span id="usedCode"></span>
+    </div>
+
+    <div
+      class="time-left"
+      id="timeLeft">
+
+      Tempo restante: —
+
+    </div>
+
+  </div>
+
+  <!-- TABS -->
+
+  <div class="tabs">
+
+    <div
+      class="tab active"
+      data-tab="funcoes">
+
+      Funções
+
+    </div>
+
+    <div
+      class="tab"
+      data-tab="info">
+
+      Info
+
+    </div>
+
+  </div>
+
+  <!-- FUNCTIONS -->
+
+  <div
+    class="tab-content active"
+    id="tab-funcoes">
+
+    <div class="section-title">
+      Configurações
+    </div>
+
+    <div
+      class="card-option"
+      data-feature="Melhorar Mira Scope">
+
+      <div class="icon-box"></div>
+
+      <div class="opt-text">
+
+        <div class="opt-title">
+          Melhorar Mira Scope
+        </div>
+
+        <div class="opt-sub">
+          Melhora a mira quando aberta.
+        </div>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          class="toggle">
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+    <div
+      class="card-option"
+      data-feature="Calibrar Sensibilidade">
+
+      <div class="icon-box"></div>
+
+      <div class="opt-text">
+
+        <div class="opt-title">
+          Calibrar Sensibilidade
+        </div>
+
+        <div class="opt-sub">
+          Melhora a sua sensibilidade.
+        </div>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          class="toggle">
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+    <div
+      class="card-option"
+      data-feature="Diminuir Recuo">
+
+      <div class="icon-box"></div>
+
+      <div class="opt-text">
+
+        <div class="opt-title">
+          Diminuir Recuo
+        </div>
+
+        <div class="opt-sub">
+          Diminui o recuo de qualquer arma.
+        </div>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          class="toggle">
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+    <div
+      class="card-option"
+      data-feature="Aumentar Precisão">
+
+      <div class="icon-box"></div>
+
+      <div class="opt-text">
+
+        <div class="opt-title">
+          Aumentar Precisão
+        </div>
+
+        <div class="opt-sub">
+          Aumenta a precisão de qualquer arma.
+        </div>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          class="toggle">
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+    <div class="bottom-buttons">
+
+      <button
+        class="main-btn"
+        id="btnFreeFireNormal">
+
+        Abrir Free Fire Normal
+
+      </button>
+
+      <button
+        class="main-btn"
+        id="btnFreeFireMax">
+
+        Abrir Free Fire MAX
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- INFO -->
+
+  <div
+    class="tab-content"
+    id="tab-info">
+
+    <div class="info-card">
+
+      <div class="info-label">
+        Criado por:
+      </div>
+
+      <div class="info-value">
+        Tony 7s
+      </div>
+
+    </div>
+
+    <div class="info-card">
+
+      <div class="info-label">
+        Créditos a:
+      </div>
+
+      <div class="info-value">
+        Tony 7s
+      </div>
+
+    </div>
+
+    <div class="info-card">
+
+      <div class="info-label">
+        Modelo do telefone:
+      </div>
+
+      <div class="info-value">
+        iPhone
+      </div>
+
+    </div>
+
+    <button
+      id="btnReset"
+      class="small-btn">
+
+      Trocar código / sair
+
+    </button>
+
+    <div
+      id="infoMsg"
+      class="info-msg">
+    </div>
+
+  </div>
+
+  <div
+    class="overlay"
+    id="overlay">
+  </div>
+
+</div>
+
+<script>
+
+/* ================= PASSWORDS ================= */
+
+const VALID_CODES = [
+
+  "TONY7S-01",
+  "TONY7S-02",
+  "TONY7S-03",
+  "TONY7S-04",
+  "TONY7S-05"
+
+];
+
+const VALIDITY_MS =
+  25 * 24 * 60 * 60 * 1000;
+
+const STORAGE_KEY =
+  "tony7s_panel_access_v1";
+
+/* ================= ELEMENTS ================= */
+
+const loginScreen =
+  document.getElementById(
+    "loginScreen"
+  );
+
+const mainApp =
+  document.getElementById(
+    "mainApp"
+  );
+
+const loginToast =
+  document.getElementById(
+    "loginToast"
+  );
+
+const codeInput =
+  document.getElementById(
+    "codeInput"
+  );
+
+const loginBtn =
+  document.getElementById(
+    "loginBtn"
+  );
+
+const loginMsg =
+  document.getElementById(
+    "loginMsg"
+  );
+
+const keyInfoBox =
+  document.getElementById(
+    "keyInfo"
+  );
+
+const keyDateSpan =
+  document.getElementById(
+    "keyDate"
+  );
+
+const keyRemSpan =
+  document.getElementById(
+    "keyRemaining"
+  );
+
+const topValidando =
+  document.getElementById(
+    "topValidando"
+  );
+
+const usedCodeSpan =
+  document.getElementById(
+    "usedCode"
+  );
+
+const timeLeftSpan =
+  document.getElementById(
+    "timeLeft"
+  );
+
+const btnReset =
+  document.getElementById(
+    "btnReset"
+  );
+
+const infoMsg =
+  document.getElementById(
+    "infoMsg"
+  );
+
+let countdownInterval = null;
+
+/* ================= STORAGE ================= */
+
+function saveAccess(
+  code,
+  activatedAt,
+  expiresAt
+){
+
+  localStorage.setItem(
+
+    STORAGE_KEY,
+
+    JSON.stringify({
+
+      code:code,
+
+      activatedAt:activatedAt,
+
+      expiresAt:expiresAt
+
+    })
+
+  );
+
+}
+
+function loadAccess(){
+
+  const raw =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+  if(!raw){
+    return null;
+  }
+
+  try{
+
+    return JSON.parse(raw);
+
+  }catch(e){
+
+    return null;
+
+  }
+
+}
+
+function clearAccess(){
+
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
+
+}
+
+/* ================= TIME ================= */
+
+function formatDateTime(ts){
+
+  const d =
+    new Date(ts);
+
+  const dd =
+    String(
+      d.getDate()
+    ).padStart(2,"0");
+
+  const mm =
+    String(
+      d.getMonth()+1
+    ).padStart(2,"0");
+
+  const yy =
+    d.getFullYear();
+
+  const hh =
+    String(
+      d.getHours()
+    ).padStart(2,"0");
+
+  const mi =
+    String(
+      d.getMinutes()
+    ).padStart(2,"0");
+
+  return `${dd}/${mm}/${yy} às ${hh}:${mi}`;
+
+}
+
+function formatTimeRemaining(ms){
+
+  if(ms <= 0){
+
+    return "0d 0h 0m 0s restantes";
+
+  }
+
+  const s =
+    Math.floor(
+      ms / 1000
+    );
+
+  const d =
+    Math.floor(
+      s / (24 * 3600)
+    );
+
+  const h =
+    Math.floor(
+      (s % (24 * 3600)) / 3600
+    );
+
+  const m =
+    Math.floor(
+      (s % 3600) / 60
+    );
+
+  const sec =
+    s % 60;
+
+  return `${d}d ${h}h ${m}m ${sec}s restantes`;
+
+}
+
+/* ================= COUNTDOWN ================= */
+
+function startCountdown(expiresAt){
+
+  if(countdownInterval){
+
+    clearInterval(
+      countdownInterval
+    );
+
+  }
+
+  function tick(){
+
+    const diff =
+      expiresAt -
+      Date.now();
+
+    if(diff <= 0){
+
+      timeLeftSpan.textContent =
+        "Tempo restante: expirado";
+
+      clearAccess();
+
+      clearInterval(
+        countdownInterval
+      );
+
+      showLogin();
+
+      loginMsg.textContent =
+        "Seu código expirou. Entre com outro código.";
+
+      loginMsg.className =
+        "login-msg error";
+
+      return;
+
+    }
+
+    timeLeftSpan.textContent =
+      "Tempo restante: " +
+      formatTimeRemaining(
+        diff
+      );
+
+  }
+
+  tick();
+
+  countdownInterval =
+    setInterval(
+      tick,
+      1000
+    );
+
+}
+
+/* ================= SCREENS ================= */
+
+function showLogin(){
+
+  loginScreen.style.display =
+    "flex";
+
+  mainApp.style.display =
+    "none";
+
+}
+
+function showMain(data){
+
+  loginScreen.style.display =
+    "none";
+
+  mainApp.style.display =
+    "block";
+
+  usedCodeSpan.textContent =
+    data.code;
+
+  infoMsg.textContent =
+    "";
+
+  startCountdown(
+    data.expiresAt
+  );
+
+}
+
+/* ================= INIT ================= */
+
+function initAuth(){
+
+  const data =
+    loadAccess();
+
+  if(!data){
+
+    showLogin();
+
+    return;
+
+  }
+
+  const now =
+    Date.now();
+
+  if(now >= data.expiresAt){
+
+    clearAccess();
+
+    showLogin();
+
+  }else{
+
+    showMain(data);
+
+  }
+
+}
+
+/* ================= LOGIN ================= */
+
+loginBtn.addEventListener(
+  "click",
+  ()=>{
+
+    const code =
+      codeInput.value.trim();
+
+    loginMsg.textContent =
+      "";
+
+    keyInfoBox.style.display =
+      "none";
+
+    loginToast.classList.add(
+      "hidden"
+    );
+
+    if(!code){
+
+      loginMsg.textContent =
+        "Digite sua senha.";
+
+      loginMsg.className =
+        "login-msg error";
+
+      return;
+
+    }
+
+    if(!VALID_CODES.includes(code)){
+
+      loginMsg.textContent =
+        "Senha inválida.";
+
+      loginMsg.className =
+        "login-msg error";
+
+      return;
+
+    }
+
+    const now =
+      Date.now();
+
+    const expiresAt =
+      now + VALIDITY_MS;
+
+    keyDateSpan.textContent =
+      formatDateTime(
+        expiresAt
+      );
+
+    keyRemSpan.textContent =
+      formatTimeRemaining(
+        expiresAt - now
+      );
+
+    keyInfoBox.style.display =
+      "block";
+
+    loginBtn.textContent =
+      "VALIDANDO...";
+
+    loginBtn.classList.add(
+      "disabled"
+    );
+
+    loginBtn.disabled =
+      true;
+
+    topValidando.style.display =
+      "block";
+
+    const tempInterval =
+      setInterval(
+        ()=>{
+
+          const diff =
+            expiresAt -
+            Date.now();
+
+          keyRemSpan.textContent =
+            formatTimeRemaining(
+              diff
+            );
+
+        },
+        1000
+      );
+
+    setTimeout(
+      ()=>{
+
+        clearInterval(
+          tempInterval
+        );
+
+        saveAccess(
+          code,
+          now,
+          expiresAt
+        );
+
+        topValidando.style.display =
+          "none";
+
+        loginToast.classList.remove(
+          "hidden"
+        );
+
+        loginMsg.textContent =
+          "Acesso liberado!";
+
+        loginMsg.className =
+          "login-msg ok";
+
+        showMain({
+
+          code:code,
+
+          activatedAt:now,
+
+          expiresAt:expiresAt
+
+        });
+
+        loginBtn.textContent =
+          "ENTRAR";
+
+        loginBtn.classList.remove(
+          "disabled"
+        );
+
+        loginBtn.disabled =
+          false;
+
+      },
+      3000
+    );
+
+  }
+);
+
+/* ================= ENTER ================= */
+
+codeInput.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key === "Enter"){
+
+      loginBtn.click();
+
+    }
+
+  }
+);
+
+/* ================= RESET ================= */
+
+btnReset.addEventListener(
+  "click",
+  ()=>{
+
+    clearAccess();
+
+    if(countdownInterval){
+
+      clearInterval(
+        countdownInterval
+      );
+
+    }
+
+    showLogin();
+
+    infoMsg.textContent =
+      "";
+
+    loginMsg.textContent =
+      "Você saiu do painel.";
+
+    loginMsg.className =
+      "login-msg ok";
+
+    codeInput.value =
+      "";
+
+  }
+);
+
+/* ================= TABS ================= */
+
+const tabs =
+  document.querySelectorAll(
+    ".tab"
+  );
+
+const tabContents = {
+
+  funcoes:
+    document.getElementById(
+      "tab-funcoes"
+    ),
+
+  info:
+    document.getElementById(
+      "tab-info"
+    )
+
+};
+
+tabs.forEach(
+  tab=>{
+
+    tab.addEventListener(
+      "click",
+      ()=>{
+
+        const target =
+          tab.dataset.tab;
+
+        tabs.forEach(
+          t=>{
+            t.classList.remove(
+              "active"
+            );
+          }
+        );
+
+        tab.classList.add(
+          "active"
+        );
+
+        Object.keys(
+          tabContents
+        ).forEach(
+          key=>{
+
+            tabContents[key]
+              .classList
+              .toggle(
+                "active",
+                key === target
+              );
+
+          }
+        );
+
+      }
+    );
+
+  }
+);
+
+/* ================= OPTIONS ================= */
+
+const options =
+  document.querySelectorAll(
+    ".card-option"
+  );
+
+const overlay =
+  document.getElementById(
+    "overlay"
+  );
+
+options.forEach(
+  opt=>{
+
+    const toggle =
+      opt.querySelector(
+        ".toggle"
+      );
+
+    toggle.addEventListener(
+      "change",
+      ()=>{
+
+        const feature =
+          opt.getAttribute(
+            "data-feature"
+          );
+
+        if(toggle.checked){
+
+          toggle.checked =
+            false;
+
+          showConfirmModal(
+            feature,
+            ()=>{
+
+              showLoadingModal(
+                feature,
+                ()=>{
+
+                  toggle.checked =
+                    true;
+
+                }
+              );
+
+            }
+          );
+
+        }
+
+      }
+    );
+
+  }
+);
+
+/* ================= MODALS ================= */
+
+function clearOverlay(){
+
+  overlay.innerHTML =
+    "";
+
+  overlay.style.display =
+    "none";
+
+}
+
+function showConfirmModal(
+  featureName,
+  onConfirm
+){
+
+  overlay.style.display =
+    "flex";
+
+  overlay.innerHTML = `
+
+    <div class="modal">
+
+      <div class="modal-title">
+        Confirmação
+      </div>
+
+      <div class="modal-text">
+        Tem certeza de que deseja ativar<br>
+        <strong>${featureName}</strong>?
+      </div>
+
+      <div class="modal-buttons">
+
+        <button
+          class="btn btn-primary"
+          id="btnConfirmar">
+
+          Confirmar
+
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          id="btnCancelar">
+
+          Cancelar
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+  document.getElementById(
+    "btnConfirmar"
+  ).onclick =
+    onConfirm;
+
+  document.getElementById(
+    "btnCancelar"
+  ).onclick =
+    clearOverlay;
+
+}
+
+function showLoadingModal(
+  featureName,
+  onDone
+){
+
+  overlay.innerHTML = `
+
+    <div class="modal">
+
+      <div class="modal-title">
+        Aguarde
+      </div>
+
+      <div class="loading-bar">
+
+        <div
+          class="loading-bar-inner">
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+  setTimeout(
+    ()=>{
+
+      showSuccessModal(
+        featureName,
+        onDone
+      );
+
+    },
+    3000
+  );
+
+}
+
+function showSuccessModal(
+  featureName,
+  onDone
+){
+
+  overlay.innerHTML = `
+
+    <div class="modal success">
+
+      <div class="modal-title">
+        Sucesso
+      </div>
+
+      <div class="modal-text">
+        ${featureName}
+        foi ativado com sucesso!
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          class="success-ok"
+          id="btnOk">
+
+          OK
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+  document.getElementById(
+    "btnOk"
+  ).onclick =
+    ()=>{
+
+      clearOverlay();
+
+      if(onDone){
+
+        onDone();
+
+      }
+
+    };
+
+}
+
+/* ================= FREE FIRE ================= */
+
+function abrirAppFreeFire(){
+
+  window.location.href =
+    "freefire://";
+
+}
+
+function abrirAppFreeFireMax(){
+
+  window.location.href =
+    "freefiremax://";
+
+}
+
+document.getElementById(
+  "btnFreeFireNormal"
+).addEventListener(
+  "click",
+  abrirAppFreeFire
+);
+
+document.getElementById(
+  "btnFreeFireMax"
+).addEventListener(
+  "click",
+  abrirAppFreeFireMax
+);
+
+/* ================= START ================= */
+
+initAuth();
+
+</script>
+
+</body>
+</html>
