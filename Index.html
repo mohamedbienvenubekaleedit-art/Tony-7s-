@@ -1,2038 +1,2210 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-<title>Tony 7s</title>
+<title>Antijuda</title>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<meta name="apple-mobile-web-app-capable"
-content="yes">
-
-<meta name="apple-mobile-web-app-status-bar-style"
-content="black">
-
-<meta name="apple-mobile-web-app-title"
-content="Tony 7s">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Antijuda">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link rel="apple-touch-icon"
-href="https://i.postimg.cc/Hs5hy9wf/IMG-1775.jpg">
+      href="https://i.postimg.cc/7LmDNT8W/8f4199dd-a211-4077-8132-1af991b36646.jpg">
 
 <style>
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,Helvetica,sans-serif;
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
+:root{
+    --electric:#00a8ff;
+    --electric-light:#00d9ff;
+    --electric-dark:#0066ff;
+    --blue-glow:rgba(0,168,255,.45);
+
+    --bg:#000000;
+    --card:rgba(8,10,14,.94);
+    --border:rgba(0,168,255,.35);
+
+    --text:#f5f7fa;
+    --muted:#9ca3af;
+    --dim:#68707d;
+
+    --item:rgba(2,8,14,.70);
+    --item-border:rgba(0,168,255,.25);
+}
+
+html,
 body{
-  background:#000;
-  color:#fff;
-  min-height:100vh;
+    width:100%;
+    height:100%;
+    background:#000;
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,
+    "SF Pro Display","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+}
+
+/* =========================
+   FUNDO ANIMADO
+========================= */
+
+.animated-bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(0,168,255,.10),
+            transparent 38%
+        ),
+        #000;
+}
+
+#neuralCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+.background-logo{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:min(70vw,330px);
+    height:min(70vw,330px);
+    border-radius:50%;
+    overflow:hidden;
+    opacity:.075;
+    filter:drop-shadow(0 0 35px rgba(0,168,255,.8));
+    pointer-events:none;
+}
+
+.background-logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.neural-title{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    font-size:clamp(30px,10vw,80px);
+    font-weight:900;
+    color:rgba(0,168,255,.08);
+    letter-spacing:8px;
+    text-transform:uppercase;
+    pointer-events:none;
+    white-space:nowrap;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+#loadingScreen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+    transition:opacity .6s ease;
+}
+
+#loadingScreen.fade-out{
+    opacity:0;
+    pointer-events:none;
+}
+
+.loader-container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+}
+
+.loader-logo{
+    width:115px;
+    height:115px;
+    border-radius:50%;
+    overflow:hidden;
+    animation:logoPulse 1.8s ease-in-out infinite;
 }
 
-/* ================= LOGIN ================= */
-
-#loginScreen{
-  width:100%;
-  max-width:480px;
-  margin:0 auto;
-  min-height:100vh;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:20px 14px;
-
-  background:#02030a;
-
-  background-image:
-    radial-gradient(
-      circle at top,
-      #10204a 0,
-      transparent 60%
-    );
-}
-
-.login-wrapper{
-  width:100%;
-}
-
-.login-toast{
-  background:#07140b;
-  border-radius:14px;
-  padding:8px 12px;
-
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  margin-bottom:10px;
-
-  border:1px solid #199b38;
-
-  box-shadow:
-    0 0 10px rgba(0,0,0,.8);
-
-  font-size:13px;
-}
-
-.login-toast.hidden{
-  display:none;
-}
-
-.login-toast-icon{
-  width:16px;
-  height:16px;
-  border-radius:50%;
-  background:#199b38;
-}
-
-.login-card{
-  width:100%;
-
-  background:#050914;
-
-  border-radius:22px;
-
-  border:1px solid #242a3a;
-
-  padding:18px 16px 20px;
-
-  box-shadow:
-    0 0 22px rgba(0,0,0,.9);
-}
-
-.login-profile{
-  text-align:center;
-  margin-bottom:16px;
-}
-
-.login-avatar-wrap{
-  display:inline-flex;
-
-  padding:3px;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #1e6bff,
-      #000
-    );
-
-  box-shadow:
-    0 0 16px
-    rgba(46,115,255,.8);
-}
-
-.login-avatar{
-  width:70px;
-  height:70px;
-
-  border-radius:50%;
-
-  background-size:cover;
-  background-position:center;
-
-  background-image:url(
-    "https://i.postimg.cc/Hs5hy9wf/IMG-1775.jpg"
-  );
-}
-
-.login-name{
-  margin-top:8px;
-
-  font-size:18px;
-  font-weight:600;
-
-  color:#3b82ff;
-}
-
-.login-subtitle{
-  margin-top:3px;
-
-  font-size:12px;
-
-  color:#a9b1c8;
-}
-
-.login-label{
-  font-size:13px;
-
-  margin-bottom:4px;
-  margin-top:10px;
-}
-
-.login-input-box{
-  background:#02040b;
-
-  border-radius:12px;
-
-  border:1px solid #2a3040;
-
-  padding:8px 10px;
-
-  margin-bottom:10px;
-}
-
-.login-input{
-  width:100%;
-
-  border:none;
-
-  background:transparent;
-
-  color:#fff;
-
-  font-size:13px;
-
-  outline:none;
-}
-
-.login-input::placeholder{
-  color:#777;
-}
-
-.login-btn-main{
-  width:100%;
-
-  padding:11px;
-
-  border-radius:18px;
-
-  border:none;
-
-  background:#215dff;
-
-  color:#fff;
-
-  font-weight:600;
-
-  font-size:14px;
-
-  cursor:pointer;
-
-  margin-top:6px;
-}
-
-.login-btn-main.disabled{
-  opacity:.6;
-  cursor:default;
-}
-
-.login-msg{
-  margin-top:8px;
-
-  font-size:12px;
-
-  min-height:16px;
-
-  text-align:center;
-}
-
-.login-msg.error{
-  color:#ff395e;
-}
-
-.login-msg.ok{
-  color:#39c96a;
-}
-
-.key-info{
-  margin-top:14px;
-
-  background:#050b08;
-
-  border-radius:14px;
-
-  border:1px solid #1e3a23;
-
-  padding:10px;
-
-  font-size:12px;
-}
-
-.key-info-title{
-  color:#7ed87e;
-
-  margin-bottom:4px;
-
-  font-weight:600;
-}
-
-.key-date{
-  color:#5ef45e;
-
-  margin-bottom:2px;
-}
-
-.key-remaining{
-  color:#e0e0e0;
-}
-
-/* ================= MAIN ================= */
-
-#mainApp{
-  width:100%;
-
-  max-width:480px;
-
-  margin:0 auto;
-
-  min-height:100vh;
-
-  display:none;
-
-  padding:16px 14px 24px;
-
-  background:#000;
-}
-
-.profile{
-  text-align:center;
-
-  margin-bottom:18px;
-  margin-top:16px;
-}
-
-.avatar-wrapper{
-  display:inline-flex;
-
-  padding:3px;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #1e6bff,
-      #000
-    );
-
-  box-shadow:
-    0 0 16px
-    rgba(46,115,255,.8);
-}
-
-.avatar{
-  width:86px;
-  height:86px;
-
-  border-radius:50%;
-
-  background-size:cover;
-  background-position:center;
-
-  background-image:url(
-    "https://i.postimg.cc/Hs5hy9wf/IMG-1775.jpg"
-  );
+.loader-logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
 }
 
-.profile-name{
-  margin-top:8px;
-
-  font-size:18px;
-
-  font-weight:600;
-
-  color:#3b82ff;
+.loader-ring{
+    width:145px;
+    height:145px;
+    position:absolute;
+    border-radius:50%;
+    border:2px solid transparent;
+    border-top-color:var(--electric);
+    border-right-color:rgba(0,168,255,.3);
+    animation:spin 1.3s linear infinite;
 }
-
-.profile-copy{
-  margin-top:3px;
 
-  font-size:12px;
-
-  color:#aaa;
+.loading-text{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:3px;
+    color:var(--electric-light);
+    text-transform:uppercase;
+    animation:textPulse 1.5s ease-in-out infinite;
 }
-
-.code-info{
-  margin-top:2px;
-
-  font-size:12px;
 
-  color:#a9b1ff;
+@keyframes logoPulse{
+    0%,100%{
+        transform:scale(.94);
+        filter:drop-shadow(0 0 8px rgba(0,168,255,.35));
+    }
+    50%{
+        transform:scale(1.06);
+        filter:drop-shadow(0 0 30px rgba(0,168,255,.9));
+    }
 }
 
-.time-left{
-  margin-top:2px;
-
-  font-size:12px;
-
-  color:#ffd86a;
+@keyframes spin{
+    to{transform:rotate(360deg);}
 }
-
-/* ================= TABS ================= */
 
-.tabs{
-  display:flex;
-
-  margin-top:18px;
-  margin-bottom:16px;
-
-  border-radius:16px;
-
-  overflow:hidden;
-
-  background:#0c0f1a;
+@keyframes textPulse{
+    0%,100%{opacity:.45}
+    50%{opacity:1}
 }
-
-.tab{
-  flex:1;
 
-  padding:10px 0;
+/* =========================
+   TOAST
+========================= */
 
-  text-align:center;
+#toast{
+    position:fixed;
+    top:16px;
+    left:50%;
+    transform:translateX(-50%) translateY(-130px);
+    z-index:9998;
 
-  font-size:13px;
+    min-width:240px;
+    max-width:88vw;
 
-  font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
 
-  cursor:pointer;
-}
+    padding:11px 18px;
 
-.tab.active{
-  background:#215dff;
-  color:#fff;
-}
+    background:rgba(5,8,12,.97);
+    border:1px solid var(--electric);
+    border-radius:14px;
 
-.tab:not(.active){
-  background:#141821;
-  color:#bbb;
-}
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.7),
+        0 0 20px rgba(0,168,255,.12);
 
-.tab-content{
-  display:none;
+    transition:
+        transform .4s cubic-bezier(.175,.885,.32,1.275);
 }
 
-.tab-content.active{
-  display:block;
+#toast.show{
+    transform:translateX(-50%) translateY(0);
 }
-
-/* ================= OPTIONS ================= */
-
-.section-title{
-  font-size:16px;
 
-  font-weight:600;
+#toast.success{border-color:#10b981}
+#toast.error{border-color:#ef4444}
+#toast.loading{border-color:var(--electric-light)}
 
-  margin-bottom:10px;
+.toast-icon{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:800;
+    flex-shrink:0;
 }
-
-.card-option{
-  background:#050914;
-
-  border-radius:18px;
-
-  border:1px solid #242a3a;
 
-  padding:10px 12px;
-
-  margin-bottom:10px;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
+#toast.success .toast-icon{
+    background:#10b981;
+    color:#fff;
 }
-
-.icon-box{
-  width:42px;
-  height:42px;
-
-  border-radius:14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0035ff,
-      #00146b
-    );
 
-  flex-shrink:0;
+#toast.error .toast-icon{
+    background:#ef4444;
+    color:#fff;
 }
 
-.opt-text{
-  flex:1;
+#toast.loading .toast-icon{
+    background:var(--electric);
+    color:#fff;
+    animation:spin .8s linear infinite;
 }
 
-.opt-title{
-  font-size:14px;
-
-  font-weight:600;
+.toast-msg{
+    font-size:13px;
+    font-weight:600;
 }
-
-.opt-sub{
-  font-size:11px;
-
-  color:#acb3d5;
 
-  margin-top:3px;
-}
+/* =========================
+   LAYOUT
+========================= */
 
-/* ================= SWITCH ================= */
+.container{
+    position:relative;
+    z-index:2;
 
-.switch{
-  position:relative;
+    min-height:100dvh;
 
-  width:44px;
-  height:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-  flex-shrink:0;
+    padding:16px;
 }
 
-.switch input{
-  opacity:0;
-
-  width:0;
-  height:0;
-}
+.main-card{
+    width:100%;
+    max-width:430px;
 
-.slider{
-  position:absolute;
+    max-height:92dvh;
+    overflow-y:auto;
+    overflow-x:hidden;
 
-  cursor:pointer;
+    padding:clamp(20px,5vw,32px);
 
-  inset:0;
+    background:var(--card);
 
-  background:#202535;
+    border:1px solid var(--border);
+    border-radius:22px;
 
-  border-radius:999px;
+    backdrop-filter:blur(25px) saturate(150%);
+    -webkit-backdrop-filter:blur(25px) saturate(150%);
 
-  transition:.3s;
+    box-shadow:
+        0 0 0 1px rgba(0,168,255,.05),
+        0 0 50px rgba(0,168,255,.16);
 }
 
-.slider:before{
-  position:absolute;
-
-  content:"";
-
-  height:18px;
-  width:18px;
-
-  left:3px;
-  top:3px;
-
-  background:#fff;
-
-  border-radius:50%;
-
-  transition:.3s;
+.main-card::-webkit-scrollbar{
+    width:4px;
 }
 
-.switch input:checked + .slider{
-  background:#2364ff;
+.main-card::-webkit-scrollbar-thumb{
+    background:rgba(0,168,255,.45);
+    border-radius:10px;
 }
 
-.switch input:checked + .slider:before{
-  transform:translateX(20px);
+.hidden{
+    display:none!important;
 }
 
-/* ================= BUTTONS ================= */
+/* =========================
+   HEADER
+========================= */
 
-.bottom-buttons{
-  margin-top:16px;
+.header{
+    text-align:center;
+    margin-bottom:24px;
 }
-
-.main-btn{
-  width:100%;
 
-  padding:10px;
+.logo{
+    width:88px;
+    height:88px;
+    margin:0 auto 13px;
 
-  border-radius:22px;
+    border-radius:50%;
+    overflow:hidden;
 
-  border:none;
-
-  margin-bottom:8px;
-
-  background:#215dff;
-
-  color:#fff;
-
-  font-weight:600;
-
-  font-size:13px;
-
-  cursor:pointer;
+    box-shadow:
+        0 0 0 1px rgba(0,168,255,.25),
+        0 0 30px rgba(0,168,255,.20);
 }
-
-.main-btn:last-child{
-  margin-bottom:0;
-
-  background:#1333a2;
-}
-
-.small-btn{
-  width:100%;
-
-  padding:8px;
-
-  border-radius:18px;
-
-  border:1px solid #333a50;
 
-  background:#050914;
-
-  color:#b6bedf;
-
-  font-size:12px;
-
-  cursor:pointer;
-
-  margin-top:10px;
+.logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
 }
-
-/* ================= INFO ================= */
-
-.info-card{
-  background:#171727;
 
-  border-radius:18px;
+.app-title{
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:2px;
 
-  padding:14px 16px;
+    background:
+        linear-gradient(
+            135deg,
+            var(--electric),
+            var(--electric-light)
+        );
 
-  margin-bottom:10px;
-
-  border:2px solid #7514b5;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
 }
-
-.info-label{
-  font-size:15px;
-
-  font-weight:700;
 
-  color:#d121ff;
-
-  margin-bottom:6px;
+.app-subtitle{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:13px;
 }
-
-.info-value{
-  font-size:14px;
 
-  color:#fff;
+.copyright{
+    margin-top:5px;
+    color:var(--dim);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1px;
 }
-
-.info-msg{
-  margin-top:8px;
-
-  font-size:12px;
 
-  min-height:16px;
+/* =========================
+   FORM
+========================= */
 
-  text-align:center;
-
-  color:#ff395e;
+.form-group{
+    margin-bottom:18px;
 }
-
-/* ================= MODAL ================= */
-
-.overlay{
-  position:fixed;
-
-  inset:0;
-
-  background:rgba(0,0,0,.7);
-
-  display:none;
 
-  align-items:center;
+.form-label{
+    display:block;
+    margin-bottom:7px;
 
-  justify-content:center;
-
-  z-index:20;
+    font-size:12px;
+    font-weight:700;
+    color:#d1d5db;
 }
 
-.modal{
-  background:#101015;
+.form-input{
+    width:100%;
 
-  padding:20px;
+    padding:14px 15px;
 
-  border-radius:16px;
+    background:rgba(0,0,0,.55);
+    color:#fff;
 
-  width:80%;
+    border:1px solid rgba(0,168,255,.30);
+    border-radius:12px;
 
-  max-width:280px;
+    font-size:15px;
 
-  text-align:center;
-
-  box-shadow:
-    0 0 25px
-    rgba(0,0,0,.8);
+    transition:.25s;
 }
-
-.modal-title{
-  font-size:18px;
 
-  margin-bottom:12px;
+.form-input::placeholder{
+    color:#59616d;
 }
 
-.modal-text{
-  font-size:13px;
+.form-input:focus{
+    outline:none;
+    border-color:var(--electric);
 
-  margin-bottom:18px;
-
-  line-height:1.4;
+    box-shadow:
+        0 0 0 3px rgba(0,168,255,.13),
+        0 0 20px rgba(0,168,255,.08);
 }
-
-.modal-buttons{
-  display:flex;
 
-  flex-direction:column;
-
-  gap:10px;
-}
+/* =========================
+   BUTTONS
+========================= */
 
 .btn{
-  padding:8px;
+    width:100%;
 
-  border-radius:18px;
+    border:0;
+    border-radius:13px;
 
-  border:none;
+    padding:14px 20px;
 
-  cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
 
-  font-size:13px;
+    color:#fff;
 
-  font-weight:600;
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+
+    cursor:pointer;
+    text-decoration:none;
+
+    transition:.25s;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+.btn:active{
+    transform:scale(.97);
 }
 
 .btn-primary{
-  background:#3b9cff;
+    margin-top:4px;
 
-  color:#fff;
+    background:
+        linear-gradient(
+            135deg,
+            #008cff,
+            #00c6ff
+        );
+
+    box-shadow:
+        0 7px 25px rgba(0,168,255,.35);
 }
 
-.btn-secondary{
-  background:#30303a;
-
-  color:#fff;
+.btn-primary:hover{
+    box-shadow:
+        0 8px 30px rgba(0,168,255,.55);
 }
 
-.loading-bar{
-  width:100%;
-
-  height:4px;
-
-  background:#30303a;
-
-  border-radius:999px;
-
-  overflow:hidden;
-
-  margin-top:12px;
+.btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
 }
 
-.loading-bar-inner{
-  height:100%;
+.info-box{
+    margin-top:18px;
+    padding:15px;
 
-  background:#fff;
+    text-align:center;
 
-  width:0%;
-
-  animation:loading 3s linear forwards;
+    background:rgba(0,168,255,.055);
+    border:1px solid rgba(0,168,255,.22);
+    border-radius:12px;
 }
 
-@keyframes loading{
+.info-label{
+    font-size:10px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
 
-  from{
-    width:0%;
-  }
+.info-value{
+    margin-top:4px;
+    font-size:15px;
+    font-weight:800;
+    color:var(--electric-light);
+}
 
-  to{
+.info-subtext{
+    margin-top:4px;
+    color:var(--dim);
+    font-size:11px;
+}
+
+/* =========================
+   TABS
+========================= */
+
+.tabs{
+    display:flex;
+    gap:6px;
+
+    padding:5px;
+    margin-bottom:18px;
+
+    background:rgba(0,0,0,.5);
+    border:1px solid rgba(0,168,255,.18);
+    border-radius:14px;
+}
+
+.tab{
+    flex:1;
+
+    padding:10px 4px;
+
+    border:0;
+    border-radius:10px;
+
+    background:transparent;
+    color:#697381;
+
+    cursor:pointer;
+
+    font-size:10px;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:.5px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+
+    transition:.25s;
+}
+
+.tab svg{
+    width:18px;
+    height:18px;
+}
+
+.tab.active{
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #008cff,
+            #0066ff
+        );
+
+    box-shadow:
+        0 5px 18px rgba(0,168,255,.35);
+}
+
+.tab-content{
+    display:none;
+}
+
+.tab-content.active{
+    display:block;
+    animation:fadeUp .25s ease;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:12px;
+
+    color:#697381;
+
+    font-size:10px;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:2px;
+}
+
+.section-title::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:rgba(255,255,255,.07);
+}
+
+/* =========================
+   OPTIONS
+========================= */
+
+.feature-item{
     width:100%;
-  }
+    min-height:85px;
 
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:12px;
+
+    margin-bottom:10px;
+
+    background:var(--item);
+    border:1px solid var(--item-border);
+    border-radius:13px;
+
+    transition:.25s;
 }
 
-.success .modal-footer{
-  margin-top:14px;
+.feature-item:hover{
+    border-color:rgba(0,168,255,.55);
+
+    box-shadow:
+        0 0 20px rgba(0,168,255,.07);
 }
 
-.success-ok{
-  background:#39c96a;
+.feature-icon-wrap{
+    width:40px;
+    height:40px;
 
-  color:#fff;
+    flex-shrink:0;
 
-  padding:8px 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-  width:100%;
+    border-radius:10px;
 
-  border:none;
-
-  border-radius:18px;
-
-  font-weight:600;
-
-  cursor:pointer;
+    /* Les logos SVG restent les mêmes */
+    background:rgba(0,168,255,.10);
 }
 
-/* ================= VALIDATION ================= */
+.feature-icon-wrap svg{
+    width:19px;
+    height:19px;
 
-#topValidando{
-  position:fixed;
-
-  top:12px;
-
-  left:50%;
-
-  transform:translateX(-50%);
-
-  background:#071225;
-
-  border-radius:14px;
-
-  padding:8px 14px;
-
-  font-size:13px;
-
-  border:1px solid #2850ff;
-
-  box-shadow:
-    0 0 12px
-    rgba(0,0,0,.8);
-
-  display:none;
-
-  z-index:30;
+    color:var(--electric-light);
 }
 
+.feature-info{
+    flex:1;
+    min-width:0;
+}
+
+.feature-title{
+    margin-bottom:3px;
+
+    color:var(--text);
+
+    font-size:12px;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:.4px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.feature-desc{
+    color:var(--muted);
+
+    font-size:11px;
+    line-height:1.35;
+
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+}
+
+/* =========================
+   TOGGLE
+========================= */
+
+.toggle{
+    width:48px;
+    height:28px;
+
+    flex-shrink:0;
+
+    position:relative;
+
+    background:#303844;
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.toggle.active{
+    background:
+        linear-gradient(
+            135deg,
+            #008cff,
+            #00c6ff
+        );
+
+    box-shadow:
+        0 0 14px rgba(0,168,255,.30);
+}
+
+.toggle-thumb{
+    position:absolute;
+
+    top:3px;
+    left:3px;
+
+    width:22px;
+    height:22px;
+
+    background:#fff;
+    border-radius:50%;
+
+    box-shadow:0 2px 7px rgba(0,0,0,.4);
+
+    transition:
+        transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+
+.toggle.active .toggle-thumb{
+    transform:translateX(20px);
+}
+
+/* =========================
+   ACTIVAR
+========================= */
+
+.btn-inject{
+    margin-top:20px;
+
+    padding:15px 20px;
+
+    font-size:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0077ff,
+            #00c6ff
+        );
+
+    box-shadow:
+        0 8px 30px rgba(0,168,255,.38);
+}
+
+.btn-inject:hover{
+    box-shadow:
+        0 8px 35px rgba(0,168,255,.60);
+}
+
+/* =========================
+   LOGOUT
+========================= */
+
+.logout-link{
+    display:block;
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#68707d;
+
+    font-size:13px;
+
+    cursor:pointer;
+}
+
+.logout-link:hover{
+    color:var(--electric-light);
+}
 </style>
 </head>
 
 <body>
 
-<!-- ================= VALIDATION ================= -->
+<!-- =========================
+     FUNDO
+========================= -->
 
-<div id="topValidando">
-  Validando...
-</div>
+<div class="animated-bg">
 
-<!-- ================= LOGIN ================= -->
+    <canvas id="neuralCanvas"></canvas>
 
-<div id="loginScreen">
-
-  <div class="login-wrapper">
-
-    <div
-      id="loginToast"
-      class="login-toast hidden">
-
-      <div class="login-toast-icon"></div>
-
-      <div>
-        Acesso liberado!
-      </div>
-
+    <div class="background-logo">
+        <img
+            src="https://i.postimg.cc/7LmDNT8W/8f4199dd-a211-4077-8132-1af991b36646.jpg"
+            alt="Antijuda">
     </div>
 
-    <div class="login-card">
-
-      <div class="login-profile">
-
-        <div class="login-avatar-wrap">
-
-          <div class="login-avatar"></div>
-
-        </div>
-
-        <div class="login-name">
-          Tony 7s
-        </div>
-
-        <div class="login-subtitle">
-          Digite sua senha para continuar
-        </div>
-
-      </div>
-
-      <div class="login-label">
-        Senha de Acesso
-      </div>
-
-      <div class="login-input-box">
-
-        <input
-          id="codeInput"
-          class="login-input"
-          type="password"
-          placeholder="Digite sua senha"
-          autocomplete="off"
-        >
-
-      </div>
-
-      <button
-        id="loginBtn"
-        class="login-btn-main">
-
-        ENTRAR
-
-      </button>
-
-      <div
-        id="loginMsg"
-        class="login-msg">
-      </div>
-
-      <div
-        id="keyInfo"
-        class="key-info"
-        style="display:none;">
-
-        <div class="key-info-title">
-          VALIDADE
-        </div>
-
-        <div
-          id="keyDate"
-          class="key-date">
-        </div>
-
-        <div
-          id="keyRemaining"
-          class="key-remaining">
-        </div>
-
-      </div>
-
+    <div class="neural-title">
+        ANTIJUDA
     </div>
-
-  </div>
 
 </div>
 
-<!-- ================= MAIN APP ================= -->
+<!-- =========================
+     TOAST
+========================= -->
 
-<div id="mainApp">
+<div id="toast">
+    <div class="toast-icon" id="toastIcon"></div>
+    <div class="toast-msg" id="toastMsg"></div>
+</div>
 
-  <div class="profile">
+<!-- =========================
+     LOADING
+========================= -->
 
-    <div class="avatar-wrapper">
+<div id="loadingScreen">
 
-      <div class="avatar"></div>
+    <div class="loader-container">
 
-    </div>
+        <div class="loader-ring"></div>
 
-    <div class="profile-name">
-      Tony 7s
-    </div>
-
-    <div class="profile-copy">
-      copyright : Tony 7s
-    </div>
-
-    <div class="code-info">
-      Código usado:
-      <span id="usedCode"></span>
-    </div>
-
-    <div
-      class="time-left"
-      id="timeLeft">
-
-      Tempo restante: —
-
-    </div>
-
-  </div>
-
-  <!-- TABS -->
-
-  <div class="tabs">
-
-    <div
-      class="tab active"
-      data-tab="funcoes">
-
-      Funções
-
-    </div>
-
-    <div
-      class="tab"
-      data-tab="info">
-
-      Info
-
-    </div>
-
-  </div>
-
-  <!-- FUNCTIONS -->
-
-  <div
-    class="tab-content active"
-    id="tab-funcoes">
-
-    <div class="section-title">
-      Configurações
-    </div>
-
-    <div
-      class="card-option"
-      data-feature="Melhorar Mira Scope">
-
-      <div class="icon-box"></div>
-
-      <div class="opt-text">
-
-        <div class="opt-title">
-          Melhorar Mira Scope
+        <div class="loader-logo">
+            <img
+                src="https://i.postimg.cc/7LmDNT8W/8f4199dd-a211-4077-8132-1af991b36646.jpg"
+                alt="Antijuda">
         </div>
 
-        <div class="opt-sub">
-          Melhora a mira quando aberta.
+        <div class="loading-text">
+            ANTIJUDA
         </div>
 
-      </div>
-
-      <label class="switch">
-
-        <input
-          type="checkbox"
-          class="toggle">
-
-        <span class="slider"></span>
-
-      </label>
-
     </div>
 
-    <div
-      class="card-option"
-      data-feature="Calibrar Sensibilidade">
+</div>
 
-      <div class="icon-box"></div>
+<!-- =========================
+     LOGIN
+========================= -->
 
-      <div class="opt-text">
+<div id="loginScreen" class="container hidden">
 
-        <div class="opt-title">
-          Calibrar Sensibilidade
+    <div class="main-card">
+
+        <div class="header">
+
+            <div class="logo">
+                <img
+                    src="https://i.postimg.cc/7LmDNT8W/8f4199dd-a211-4077-8132-1af991b36646.jpg"
+                    alt="Antijuda">
+            </div>
+
+            <h1 class="app-title">
+                ANTIJUDA
+            </h1>
+
+            <p class="app-subtitle">
+                Introduce tu contraseña para continuar
+            </p>
+
+            <p class="copyright">
+                COPYRIGHT : ANTIJUDA
+            </p>
+
         </div>
 
-        <div class="opt-sub">
-          Melhora a sua sensibilidade.
+        <form id="loginForm" autocomplete="off">
+
+            <div class="form-group">
+
+                <label
+                    for="keyInput"
+                    class="form-label">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="keyInput"
+                    class="form-input"
+                    placeholder="Introduce tu contraseña"
+                    autocomplete="off"
+                    spellcheck="false">
+
+            </div>
+
+            <button
+                type="submit"
+                id="loginBtn"
+                class="btn btn-primary">
+
+                ENTRAR
+
+            </button>
+
+        </form>
+
+        <div
+            id="keyInfoLogin"
+            class="info-box hidden">
+
+            <div class="info-label">
+                Expira en
+            </div>
+
+            <div
+                id="validUntilLogin"
+                class="info-value">
+            </div>
+
+            <div
+                id="timeLeftLogin"
+                class="info-subtext">
+            </div>
+
         </div>
 
-      </div>
-
-      <label class="switch">
-
-        <input
-          type="checkbox"
-          class="toggle">
-
-        <span class="slider"></span>
-
-      </label>
-
     </div>
 
-    <div
-      class="card-option"
-      data-feature="Diminuir Recuo">
+</div>
 
-      <div class="icon-box"></div>
+<!-- =========================
+     APP PRINCIPAL
+========================= -->
 
-      <div class="opt-text">
+<div id="mainApp" class="container hidden">
 
-        <div class="opt-title">
-          Diminuir Recuo
+    <div class="main-card">
+
+        <div
+            class="header"
+            style="margin-bottom:18px;">
+
+            <div class="logo">
+
+                <img
+                    src="https://i.postimg.cc/7LmDNT8W/8f4199dd-a211-4077-8132-1af991b36646.jpg"
+                    alt="Antijuda">
+
+            </div>
+
+            <h1 class="app-title">
+                ANTIJUDA
+            </h1>
+
+            <p class="copyright">
+                COPYRIGHT : ANTIJUDA
+            </p>
+
         </div>
 
-        <div class="opt-sub">
-          Diminui o recuo de qualquer arma.
+        <!-- TABS -->
+
+        <div class="tabs">
+
+            <button
+                class="tab active"
+                data-tab="features">
+
+                <!-- Logo conservé -->
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+
+                </svg>
+
+                Funciones
+
+            </button>
+
+            <button
+                class="tab"
+                data-tab="optimization">
+
+                <!-- Logo conservé -->
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+
+                </svg>
+
+                Optimización
+
+            </button>
+
+            <button
+                class="tab"
+                data-tab="account">
+
+                <!-- Logo conservé -->
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+
+                    <circle
+                        cx="12"
+                        cy="7"
+                        r="4"/>
+
+                </svg>
+
+                Cuenta
+
+            </button>
+
         </div>
 
-      </div>
+        <!-- =====================
+             FUNCIONES
+        ====================== -->
 
-      <label class="switch">
+        <div
+            id="features"
+            class="tab-content active">
 
-        <input
-          type="checkbox"
-          class="toggle">
+            <div class="section-title">
+                Combate
+            </div>
 
-        <span class="slider"></span>
+            <div id="featuresList"></div>
 
-      </label>
-
-    </div>
-
-    <div
-      class="card-option"
-      data-feature="Aumentar Precisão">
-
-      <div class="icon-box"></div>
-
-      <div class="opt-text">
-
-        <div class="opt-title">
-          Aumentar Precisão
         </div>
 
-        <div class="opt-sub">
-          Aumenta a precisão de qualquer arma.
+        <!-- =====================
+             OPTIMIZACIÓN
+        ====================== -->
+
+        <div
+            id="optimization"
+            class="tab-content">
+
+            <div class="section-title">
+                Sistema
+            </div>
+
+            <div id="optimizationList"></div>
+
         </div>
 
-      </div>
+        <!-- =====================
+             CUENTA
+        ====================== -->
 
-      <label class="switch">
+        <div
+            id="account"
+            class="tab-content">
 
-        <input
-          type="checkbox"
-          class="toggle">
+            <div class="section-title">
+                Información
+            </div>
 
-        <span class="slider"></span>
+            <div class="info-box">
 
-      </label>
+                <div class="info-label">
+                    Expira en
+                </div>
 
-    </div>
+                <div
+                    id="expirationDate"
+                    class="info-value">
+                    30 días
+                </div>
 
-    <div class="bottom-buttons">
+                <div
+                    id="daysLeft"
+                    class="info-subtext">
+                    30 días restantes
+                </div>
 
-      <button
-        class="main-btn"
-        id="btnFreeFireNormal">
+            </div>
 
-        Abrir Free Fire Normal
+            <a
+                class="logout-link"
+                onclick="logout()">
 
-      </button>
+                Cerrar sesión
 
-      <button
-        class="main-btn"
-        id="btnFreeFireMax">
+            </a>
 
-        Abrir Free Fire MAX
+        </div>
 
-      </button>
+        <button
+            class="btn btn-inject"
+            id="injectBtn">
 
-    </div>
+            ACTIVAR
 
-  </div>
-
-  <!-- INFO -->
-
-  <div
-    class="tab-content"
-    id="tab-info">
-
-    <div class="info-card">
-
-      <div class="info-label">
-        Criado por:
-      </div>
-
-      <div class="info-value">
-        Tony 7s
-      </div>
+        </button>
 
     </div>
-
-    <div class="info-card">
-
-      <div class="info-label">
-        Créditos a:
-      </div>
-
-      <div class="info-value">
-        Tony 7s
-      </div>
-
-    </div>
-
-    <div class="info-card">
-
-      <div class="info-label">
-        Modelo do telefone:
-      </div>
-
-      <div class="info-value">
-        iPhone
-      </div>
-
-    </div>
-
-    <button
-      id="btnReset"
-      class="small-btn">
-
-      Trocar código / sair
-
-    </button>
-
-    <div
-      id="infoMsg"
-      class="info-msg">
-    </div>
-
-  </div>
-
-  <div
-    class="overlay"
-    id="overlay">
-  </div>
 
 </div>
 
 <script>
 
-/* ================= PASSWORDS ================= */
+/* =====================================================
+   CONFIGURACIÓN
+===================================================== */
 
-const VALID_CODES = [
+const DEFAULT_PASSWORD = "Antijudakeyvi1";
+const VALID_DAYS = 30;
 
-  "TONY7S-01",
-  "TONY7S-02",
-  "TONY7S-03",
-  "TONY7S-04",
-  "TONY7S-05"
+const LOGO_URL =
+"https://i.postimg.cc/7LmDNT8W/8f4199dd-a211-4077-8132-1af991b36646.jpg";
 
-];
 
-const VALIDITY_MS =
-  25 * 24 * 60 * 60 * 1000;
+/* =====================================================
+   CANVAS
+===================================================== */
 
-const STORAGE_KEY =
-  "tony7s_panel_access_v1";
+const canvas =
+document.getElementById("neuralCanvas");
 
-/* ================= ELEMENTS ================= */
+const ctx =
+canvas.getContext("2d");
 
-const loginScreen =
-  document.getElementById(
-    "loginScreen"
-  );
+function resizeCanvas(){
 
-const mainApp =
-  document.getElementById(
-    "mainApp"
-  );
-
-const loginToast =
-  document.getElementById(
-    "loginToast"
-  );
-
-const codeInput =
-  document.getElementById(
-    "codeInput"
-  );
-
-const loginBtn =
-  document.getElementById(
-    "loginBtn"
-  );
-
-const loginMsg =
-  document.getElementById(
-    "loginMsg"
-  );
-
-const keyInfoBox =
-  document.getElementById(
-    "keyInfo"
-  );
-
-const keyDateSpan =
-  document.getElementById(
-    "keyDate"
-  );
-
-const keyRemSpan =
-  document.getElementById(
-    "keyRemaining"
-  );
-
-const topValidando =
-  document.getElementById(
-    "topValidando"
-  );
-
-const usedCodeSpan =
-  document.getElementById(
-    "usedCode"
-  );
-
-const timeLeftSpan =
-  document.getElementById(
-    "timeLeft"
-  );
-
-const btnReset =
-  document.getElementById(
-    "btnReset"
-  );
-
-const infoMsg =
-  document.getElementById(
-    "infoMsg"
-  );
-
-let countdownInterval = null;
-
-/* ================= STORAGE ================= */
-
-function saveAccess(
-  code,
-  activatedAt,
-  expiresAt
-){
-
-  localStorage.setItem(
-
-    STORAGE_KEY,
-
-    JSON.stringify({
-
-      code:code,
-
-      activatedAt:activatedAt,
-
-      expiresAt:expiresAt
-
-    })
-
-  );
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
 }
 
-function loadAccess(){
-
-  const raw =
-    localStorage.getItem(
-      STORAGE_KEY
-    );
-
-  if(!raw){
-    return null;
-  }
-
-  try{
-
-    return JSON.parse(raw);
-
-  }catch(e){
-
-    return null;
-
-  }
-
-}
-
-function clearAccess(){
-
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
-
-}
-
-/* ================= TIME ================= */
-
-function formatDateTime(ts){
-
-  const d =
-    new Date(ts);
-
-  const dd =
-    String(
-      d.getDate()
-    ).padStart(2,"0");
-
-  const mm =
-    String(
-      d.getMonth()+1
-    ).padStart(2,"0");
-
-  const yy =
-    d.getFullYear();
-
-  const hh =
-    String(
-      d.getHours()
-    ).padStart(2,"0");
-
-  const mi =
-    String(
-      d.getMinutes()
-    ).padStart(2,"0");
-
-  return `${dd}/${mm}/${yy} às ${hh}:${mi}`;
-
-}
-
-function formatTimeRemaining(ms){
-
-  if(ms <= 0){
-
-    return "0d 0h 0m 0s restantes";
-
-  }
-
-  const s =
-    Math.floor(
-      ms / 1000
-    );
-
-  const d =
-    Math.floor(
-      s / (24 * 3600)
-    );
-
-  const h =
-    Math.floor(
-      (s % (24 * 3600)) / 3600
-    );
-
-  const m =
-    Math.floor(
-      (s % 3600) / 60
-    );
-
-  const sec =
-    s % 60;
-
-  return `${d}d ${h}h ${m}m ${sec}s restantes`;
-
-}
-
-/* ================= COUNTDOWN ================= */
-
-function startCountdown(expiresAt){
-
-  if(countdownInterval){
-
-    clearInterval(
-      countdownInterval
-    );
-
-  }
-
-  function tick(){
-
-    const diff =
-      expiresAt -
-      Date.now();
-
-    if(diff <= 0){
-
-      timeLeftSpan.textContent =
-        "Tempo restante: expirado";
-
-      clearAccess();
-
-      clearInterval(
-        countdownInterval
-      );
-
-      showLogin();
-
-      loginMsg.textContent =
-        "Seu código expirou. Entre com outro código.";
-
-      loginMsg.className =
-        "login-msg error";
-
-      return;
-
-    }
-
-    timeLeftSpan.textContent =
-      "Tempo restante: " +
-      formatTimeRemaining(
-        diff
-      );
-
-  }
-
-  tick();
-
-  countdownInterval =
-    setInterval(
-      tick,
-      1000
-    );
-
-}
-
-/* ================= SCREENS ================= */
-
-function showLogin(){
-
-  loginScreen.style.display =
-    "flex";
-
-  mainApp.style.display =
-    "none";
-
-}
-
-function showMain(data){
-
-  loginScreen.style.display =
-    "none";
-
-  mainApp.style.display =
-    "block";
-
-  usedCodeSpan.textContent =
-    data.code;
-
-  infoMsg.textContent =
-    "";
-
-  startCountdown(
-    data.expiresAt
-  );
-
-}
-
-/* ================= INIT ================= */
-
-function initAuth(){
-
-  const data =
-    loadAccess();
-
-  if(!data){
-
-    showLogin();
-
-    return;
-
-  }
-
-  const now =
-    Date.now();
-
-  if(now >= data.expiresAt){
-
-    clearAccess();
-
-    showLogin();
-
-  }else{
-
-    showMain(data);
-
-  }
-
-}
-
-/* ================= LOGIN ================= */
-
-loginBtn.addEventListener(
-  "click",
-  ()=>{
-
-    const code =
-      codeInput.value.trim();
-
-    loginMsg.textContent =
-      "";
-
-    keyInfoBox.style.display =
-      "none";
-
-    loginToast.classList.add(
-      "hidden"
-    );
-
-    if(!code){
-
-      loginMsg.textContent =
-        "Digite sua senha.";
-
-      loginMsg.className =
-        "login-msg error";
-
-      return;
-
-    }
-
-    if(!VALID_CODES.includes(code)){
-
-      loginMsg.textContent =
-        "Senha inválida.";
-
-      loginMsg.className =
-        "login-msg error";
-
-      return;
-
-    }
-
-    const now =
-      Date.now();
-
-    const expiresAt =
-      now + VALIDITY_MS;
-
-    keyDateSpan.textContent =
-      formatDateTime(
-        expiresAt
-      );
-
-    keyRemSpan.textContent =
-      formatTimeRemaining(
-        expiresAt - now
-      );
-
-    keyInfoBox.style.display =
-      "block";
-
-    loginBtn.textContent =
-      "VALIDANDO...";
-
-    loginBtn.classList.add(
-      "disabled"
-    );
-
-    loginBtn.disabled =
-      true;
-
-    topValidando.style.display =
-      "block";
-
-    const tempInterval =
-      setInterval(
-        ()=>{
-
-          const diff =
-            expiresAt -
-            Date.now();
-
-          keyRemSpan.textContent =
-            formatTimeRemaining(
-              diff
-            );
-
-        },
-        1000
-      );
-
-    setTimeout(
-      ()=>{
-
-        clearInterval(
-          tempInterval
-        );
-
-        saveAccess(
-          code,
-          now,
-          expiresAt
-        );
-
-        topValidando.style.display =
-          "none";
-
-        loginToast.classList.remove(
-          "hidden"
-        );
-
-        loginMsg.textContent =
-          "Acesso liberado!";
-
-        loginMsg.className =
-          "login-msg ok";
-
-        showMain({
-
-          code:code,
-
-          activatedAt:now,
-
-          expiresAt:expiresAt
-
-        });
-
-        loginBtn.textContent =
-          "ENTRAR";
-
-        loginBtn.classList.remove(
-          "disabled"
-        );
-
-        loginBtn.disabled =
-          false;
-
-      },
-      3000
-    );
-
-  }
+resizeCanvas();
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
 );
 
-/* ================= ENTER ================= */
+const PARTICLES =
+Array.from({length:70},()=>({
 
-codeInput.addEventListener(
-  "keydown",
-  e=>{
+    x:Math.random()*innerWidth,
+    y:Math.random()*innerHeight,
 
-    if(e.key === "Enter"){
+    vx:(Math.random()-.5)*.45,
+    vy:(Math.random()-.5)*.45,
 
-      loginBtn.click();
+    r:Math.random()*1.8+.8
 
-    }
+}));
 
-  }
-);
+function drawNeural(){
 
-/* ================= RESET ================= */
-
-btnReset.addEventListener(
-  "click",
-  ()=>{
-
-    clearAccess();
-
-    if(countdownInterval){
-
-      clearInterval(
-        countdownInterval
-      );
-
-    }
-
-    showLogin();
-
-    infoMsg.textContent =
-      "";
-
-    loginMsg.textContent =
-      "Você saiu do painel.";
-
-    loginMsg.className =
-      "login-msg ok";
-
-    codeInput.value =
-      "";
-
-  }
-);
-
-/* ================= TABS ================= */
-
-const tabs =
-  document.querySelectorAll(
-    ".tab"
-  );
-
-const tabContents = {
-
-  funcoes:
-    document.getElementById(
-      "tab-funcoes"
-    ),
-
-  info:
-    document.getElementById(
-      "tab-info"
-    )
-
-};
-
-tabs.forEach(
-  tab=>{
-
-    tab.addEventListener(
-      "click",
-      ()=>{
-
-        const target =
-          tab.dataset.tab;
-
-        tabs.forEach(
-          t=>{
-            t.classList.remove(
-              "active"
-            );
-          }
-        );
-
-        tab.classList.add(
-          "active"
-        );
-
-        Object.keys(
-          tabContents
-        ).forEach(
-          key=>{
-
-            tabContents[key]
-              .classList
-              .toggle(
-                "active",
-                key === target
-              );
-
-          }
-        );
-
-      }
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
     );
 
-  }
-);
+    PARTICLES.forEach(p=>{
 
-/* ================= OPTIONS ================= */
+        p.x+=p.vx;
+        p.y+=p.vy;
 
-const options =
-  document.querySelectorAll(
-    ".card-option"
-  );
+        if(
+            p.x<0 ||
+            p.x>canvas.width
+        ){
+            p.vx*=-1;
+        }
 
-const overlay =
-  document.getElementById(
-    "overlay"
-  );
+        if(
+            p.y<0 ||
+            p.y>canvas.height
+        ){
+            p.vy*=-1;
+        }
 
-options.forEach(
-  opt=>{
+        ctx.beginPath();
 
-    const toggle =
-      opt.querySelector(
-        ".toggle"
-      );
+        ctx.arc(
+            p.x,
+            p.y,
+            p.r,
+            0,
+            Math.PI*2
+        );
 
-    toggle.addEventListener(
-      "change",
-      ()=>{
+        ctx.fillStyle =
+            "rgba(0,168,255,.7)";
 
-        const feature =
-          opt.getAttribute(
-            "data-feature"
-          );
+        ctx.fill();
 
-        if(toggle.checked){
+    });
 
-          toggle.checked =
-            false;
+    for(
+        let i=0;
+        i<PARTICLES.length;
+        i++
+    ){
 
-          showConfirmModal(
-            feature,
-            ()=>{
+        for(
+            let j=i+1;
+            j<PARTICLES.length;
+            j++
+        ){
 
-              showLoadingModal(
-                feature,
-                ()=>{
+            const dx =
+                PARTICLES[i].x -
+                PARTICLES[j].x;
 
-                  toggle.checked =
-                    true;
+            const dy =
+                PARTICLES[i].y -
+                PARTICLES[j].y;
 
-                }
-              );
+            const d =
+                Math.sqrt(
+                    dx*dx+dy*dy
+                );
+
+            if(d<140){
+
+                ctx.beginPath();
+
+                ctx.strokeStyle =
+                    `rgba(0,168,255,${
+                        (1-d/140)*.25
+                    })`;
+
+                ctx.lineWidth=1;
+
+                ctx.moveTo(
+                    PARTICLES[i].x,
+                    PARTICLES[i].y
+                );
+
+                ctx.lineTo(
+                    PARTICLES[j].x,
+                    PARTICLES[j].y
+                );
+
+                ctx.stroke();
 
             }
-          );
 
         }
 
-      }
+    }
+
+    requestAnimationFrame(drawNeural);
+
+}
+
+drawNeural();
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+function showToast(
+    message,
+    type="success"
+){
+
+    const toast =
+        document.getElementById("toast");
+
+    const icon =
+        document.getElementById("toastIcon");
+
+    const text =
+        document.getElementById("toastMsg");
+
+    toast.className=type;
+
+    icon.textContent =
+        type==="success"
+        ? "✓"
+        : type==="error"
+        ? "✕"
+        : "↻";
+
+    text.textContent=message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    if(type!=="loading"){
+
+        toastTimer =
+            setTimeout(
+                ()=>{
+                    toast.classList.remove("show");
+                },
+                3000
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   OPTIONS
+===================================================== */
+
+/*
+   Les logos SVG des options sont conservés.
+   Les textes restent en espagnol.
+*/
+
+const FEATURES = [
+
+    {
+        id:0,
+        cat:"features",
+        title:"Precisión 90%",
+        desc:"Mejora la precisión y estabilidad de la mira.",
+
+        svg:`
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <circle
+                cx="12"
+                cy="12"
+                r="10"/>
+
+            <line
+                x1="22"
+                y1="12"
+                x2="18"
+                y2="12"/>
+
+            <line
+                x1="6"
+                y1="12"
+                x2="2"
+                y2="12"/>
+
+            <line
+                x1="12"
+                y1="6"
+                x2="12"
+                y2="2"/>
+
+            <line
+                x1="12"
+                y1="22"
+                x2="12"
+                y2="18"/>
+
+            <circle
+                cx="12"
+                cy="12"
+                r="4"/>
+
+        </svg>`
+    },
+
+    {
+        id:1,
+        cat:"features",
+        title:"Reducir Recoil",
+        desc:"Reduce el movimiento visual durante el juego.",
+
+        svg:`
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <line
+                x1="12"
+                y1="5"
+                x2="12"
+                y2="19"/>
+
+            <polyline
+                points="19 12 12 19 5 12"/>
+
+        </svg>`
+    },
+
+    {
+        id:4,
+        cat:"features",
+        title:"Mira Responsiva",
+        desc:"Mejora la respuesta de la pantalla y la sensibilidad.",
+
+        svg:`
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <circle
+                cx="12"
+                cy="12"
+                r="9"/>
+
+            <line
+                x1="12"
+                y1="3"
+                x2="12"
+                y2="7"/>
+
+            <line
+                x1="12"
+                y1="17"
+                x2="12"
+                y2="21"/>
+
+            <line
+                x1="3"
+                y1="12"
+                x2="7"
+                y2="12"/>
+
+            <line
+                x1="17"
+                y1="12"
+                x2="21"
+                y2="12"/>
+
+        </svg>`
+    },
+
+    {
+        id:2,
+        cat:"optimization",
+        title:"Remover Lags",
+        desc:"Reduce las interrupciones visuales y mejora la respuesta.",
+
+        svg:`
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <polygon
+                points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+
+        </svg>`
+    },
+
+    {
+        id:3,
+        cat:"optimization",
+        title:"Estabilizar 60 FPS",
+        desc:"Mantiene una experiencia visual estable.",
+
+        svg:`
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <rect
+                x="2"
+                y="3"
+                width="20"
+                height="14"
+                rx="2"/>
+
+            <line
+                x1="8"
+                y1="21"
+                x2="16"
+                y2="21"/>
+
+            <line
+                x1="12"
+                y1="17"
+                x2="12"
+                y2="21"/>
+
+            <polyline
+                points="4 10 8 10 10 6 14 14 16 10 20 10"/>
+
+        </svg>`
+    },
+
+    {
+        id:5,
+        cat:"optimization",
+        title:"Modo Desempeño",
+        desc:"Optimiza la experiencia general del dispositivo.",
+
+        svg:`
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path d="M12 3v6"/>
+
+            <path d="M6.34 6.34l4.24 4.24"/>
+
+            <path d="M3 12h6"/>
+
+            <path d="M6.34 17.66l4.24-4.24"/>
+
+            <path d="M12 21v-6"/>
+
+            <path d="M17.66 17.66l-4.24-4.24"/>
+
+            <path d="M21 12h-6"/>
+
+            <path d="M17.66 6.34l-4.24 4.24"/>
+
+        </svg>`
+    }
+
+];
+
+const states =
+new Array(FEATURES.length).fill(false);
+
+
+/* =====================================================
+   CONSTRUIR OPTIONS
+===================================================== */
+
+function buildFeatures(){
+
+    let fHTML="";
+    let oHTML="";
+
+    FEATURES.forEach(f=>{
+
+        const html=`
+
+        <div class="feature-item">
+
+            <div class="feature-icon-wrap">
+                ${f.svg}
+            </div>
+
+            <div class="feature-info">
+
+                <div class="feature-title">
+                    ${f.title}
+                </div>
+
+                <div class="feature-desc">
+                    ${f.desc}
+                </div>
+
+            </div>
+
+            <div
+                class="toggle"
+                data-id="${f.id}"
+                role="switch"
+                aria-checked="false">
+
+                <div class="toggle-thumb"></div>
+
+            </div>
+
+        </div>`;
+
+        if(f.cat==="features"){
+            fHTML+=html;
+        }else{
+            oHTML+=html;
+        }
+
+    });
+
+    document.getElementById(
+        "featuresList"
+    ).innerHTML=fHTML;
+
+    document.getElementById(
+        "optimizationList"
+    ).innerHTML=oHTML;
+
+    document.querySelectorAll(
+        ".toggle"
+    ).forEach(toggle=>{
+
+        toggle.addEventListener(
+            "click",
+            function(){
+
+                const id =
+                    parseInt(
+                        this.dataset.id
+                    );
+
+                states[id]=!states[id];
+
+                this.classList.toggle(
+                    "active"
+                );
+
+                this.setAttribute(
+                    "aria-checked",
+                    states[id]
+                );
+
+                showToast(
+                    states[id]
+                    ? `${FEATURES[id].title} activada`
+                    : `${FEATURES[id].title} desactivada`
+                );
+
+            }
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+document.querySelectorAll(
+    ".tab"
+).forEach(tab=>{
+
+    tab.addEventListener(
+        "click",
+        function(){
+
+            const target =
+                this.dataset.tab;
+
+            document.querySelectorAll(
+                ".tab"
+            ).forEach(t=>{
+
+                t.classList.remove(
+                    "active"
+                );
+
+            });
+
+            document.querySelectorAll(
+                ".tab-content"
+            ).forEach(c=>{
+
+                c.classList.remove(
+                    "active"
+                );
+
+            });
+
+            this.classList.add(
+                "active"
+            );
+
+            document.getElementById(
+                target
+            ).classList.add(
+                "active"
+            );
+
+        }
     );
 
-  }
-);
+});
 
-/* ================= MODALS ================= */
 
-function clearOverlay(){
+/* =====================================================
+   SESSION / 30 DÍAS
+===================================================== */
 
-  overlay.innerHTML =
-    "";
+const SESSION_KEY =
+"antijuda_session";
 
-  overlay.style.display =
-    "none";
+let currentSession=null;
 
-}
+function createSession(){
 
-function showConfirmModal(
-  featureName,
-  onConfirm
-){
+    const expires =
+        Date.now() +
+        VALID_DAYS *
+        24 *
+        60 *
+        60 *
+        1000;
 
-  overlay.style.display =
-    "flex";
-
-  overlay.innerHTML = `
-
-    <div class="modal">
-
-      <div class="modal-title">
-        Confirmação
-      </div>
-
-      <div class="modal-text">
-        Tem certeza de que deseja ativar<br>
-        <strong>${featureName}</strong>?
-      </div>
-
-      <div class="modal-buttons">
-
-        <button
-          class="btn btn-primary"
-          id="btnConfirmar">
-
-          Confirmar
-
-        </button>
-
-        <button
-          class="btn btn-secondary"
-          id="btnCancelar">
-
-          Cancelar
-
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-
-  document.getElementById(
-    "btnConfirmar"
-  ).onclick =
-    onConfirm;
-
-  document.getElementById(
-    "btnCancelar"
-  ).onclick =
-    clearOverlay;
-
-}
-
-function showLoadingModal(
-  featureName,
-  onDone
-){
-
-  overlay.innerHTML = `
-
-    <div class="modal">
-
-      <div class="modal-title">
-        Aguarde
-      </div>
-
-      <div class="loading-bar">
-
-        <div
-          class="loading-bar-inner">
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-  setTimeout(
-    ()=>{
-
-      showSuccessModal(
-        featureName,
-        onDone
-      );
-
-    },
-    3000
-  );
-
-}
-
-function showSuccessModal(
-  featureName,
-  onDone
-){
-
-  overlay.innerHTML = `
-
-    <div class="modal success">
-
-      <div class="modal-title">
-        Sucesso
-      </div>
-
-      <div class="modal-text">
-        ${featureName}
-        foi ativado com sucesso!
-      </div>
-
-      <div class="modal-footer">
-
-        <button
-          class="success-ok"
-          id="btnOk">
-
-          OK
-
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-
-  document.getElementById(
-    "btnOk"
-  ).onclick =
-    ()=>{
-
-      clearOverlay();
-
-      if(onDone){
-
-        onDone();
-
-      }
-
+    currentSession={
+        expiresAt:expires
     };
 
-}
-
-/* ================= FREE FIRE ================= */
-
-function abrirAppFreeFire(){
-
-  window.location.href =
-    "freefire://";
+    localStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify(
+            currentSession
+        )
+    );
 
 }
 
-function abrirAppFreeFireMax(){
+function restoreSession(){
 
-  window.location.href =
-    "freefiremax://";
+    const saved =
+        localStorage.getItem(
+            SESSION_KEY
+        );
+
+    if(!saved){
+        return false;
+    }
+
+    try{
+
+        const session =
+            JSON.parse(saved);
+
+        if(
+            !session.expiresAt ||
+            session.expiresAt<=Date.now()
+        ){
+
+            localStorage.removeItem(
+                SESSION_KEY
+            );
+
+            return false;
+        }
+
+        currentSession=session;
+
+        return true;
+
+    }catch{
+
+        localStorage.removeItem(
+            SESSION_KEY
+        );
+
+        return false;
+    }
 
 }
 
-document.getElementById(
-  "btnFreeFireNormal"
-).addEventListener(
-  "click",
-  abrirAppFreeFire
-);
 
-document.getElementById(
-  "btnFreeFireMax"
-).addEventListener(
-  "click",
-  abrirAppFreeFireMax
-);
+/* =====================================================
+   EXPIRATION
+===================================================== */
 
-/* ================= START ================= */
+let countdownTimer=null;
 
-initAuth();
+function updateExpiration(){
+
+    if(!currentSession){
+        return;
+    }
+
+    const expiry =
+        currentSession.expiresAt;
+
+    const dateEl =
+        document.getElementById(
+            "expirationDate"
+        );
+
+    const daysEl =
+        document.getElementById(
+            "daysLeft"
+        );
+
+    const date =
+        new Date(expiry);
+
+    dateEl.textContent =
+        date.toLocaleDateString(
+            "es-ES"
+        ) +
+        " · " +
+        date.toLocaleTimeString(
+            "es-ES",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+    tickExpiration(
+        expiry,
+        daysEl
+    );
+
+    if(countdownTimer){
+        clearInterval(
+            countdownTimer
+        );
+    }
+
+    countdownTimer =
+        setInterval(
+            ()=>{
+                tickExpiration(
+                    expiry,
+                    daysEl
+                );
+            },
+            1000
+        );
+
+}
+
+function tickExpiration(
+    expiry,
+    element
+){
+
+    const diff =
+        expiry-Date.now();
+
+    if(diff<=0){
+
+        element.textContent =
+            "Expirada";
+
+        element.style.color =
+            "#ef4444";
+
+        logout();
+
+        return;
+    }
+
+    const days =
+        Math.floor(
+            diff/86400000
+        );
+
+    const hours =
+        Math.floor(
+            (diff%86400000)/
+            3600000
+        );
+
+    const minutes =
+        Math.floor(
+            (diff%3600000)/
+            60000
+        );
+
+    const seconds =
+        Math.floor(
+            (diff%60000)/
+            1000
+        );
+
+    element.textContent =
+        `${days}d ${hours}h ${minutes}m ${seconds}s restantes`;
+
+}
+
+
+/* =====================================================
+   OPEN APP
+===================================================== */
+
+function openApp(){
+
+    document
+        .getElementById("loginScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("mainApp")
+        .classList.remove("hidden");
+
+    buildFeatures();
+
+    updateExpiration();
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        function(event){
+
+            event.preventDefault();
+
+            const input =
+                document.getElementById(
+                    "keyInput"
+                );
+
+            const password =
+                input.value.trim();
+
+            const button =
+                document.getElementById(
+                    "loginBtn"
+                );
+
+            if(!password){
+
+                showToast(
+                    "Introduce tu contraseña",
+                    "error"
+                );
+
+                return;
+            }
+
+            button.disabled=true;
+
+            button.textContent =
+                "VERIFICANDO...";
+
+            setTimeout(()=>{
+
+                if(
+                    password===
+                    DEFAULT_PASSWORD
+                ){
+
+                    createSession();
+
+                    showToast(
+                        "Acceso autorizado",
+                        "success"
+                    );
+
+                    setTimeout(
+                        openApp,
+                        700
+                    );
+
+                }else{
+
+                    showToast(
+                        "Contraseña incorrecta",
+                        "error"
+                    );
+
+                    button.disabled=false;
+
+                    button.textContent =
+                        "ENTRAR";
+
+                }
+
+            },900);
+
+        }
+    );
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    localStorage.removeItem(
+        SESSION_KEY
+    );
+
+    if(countdownTimer){
+        clearInterval(
+            countdownTimer
+        );
+    }
+
+    currentSession=null;
+
+    showToast(
+        "Sesión cerrada",
+        "error"
+    );
+
+    setTimeout(
+        ()=>{
+            location.reload();
+        },
+        700
+    );
+
+}
+
+
+/* =====================================================
+   BOUTON ACTIVAR
+===================================================== */
+
+document
+    .getElementById("injectBtn")
+    .addEventListener(
+        "click",
+        function(){
+
+            const active =
+                states.filter(Boolean)
+                .length;
+
+            if(!active){
+
+                showToast(
+                    "Activa al menos una función",
+                    "error"
+                );
+
+                return;
+            }
+
+            const button=this;
+
+            button.disabled=true;
+
+            button.textContent =
+                "ACTIVANDO...";
+
+            document
+                .querySelectorAll(
+                    ".toggle"
+                )
+                .forEach(toggle=>{
+
+                    toggle.style.pointerEvents =
+                        "none";
+
+                    toggle.style.opacity =
+                        ".5";
+
+                });
+
+            showToast(
+                "Iniciando activación...",
+                "loading"
+            );
+
+            setTimeout(()=>{
+
+                showToast(
+                    "Activación completada",
+                    "success"
+                );
+
+                button.disabled=false;
+
+                button.textContent =
+                    "ABRIR FREE FIRE";
+
+                document
+                    .querySelectorAll(
+                        ".toggle"
+                    )
+                    .forEach(toggle=>{
+
+                        toggle.style.pointerEvents =
+                            "";
+
+                        toggle.style.opacity =
+                            "";
+
+                    });
+
+                setTimeout(()=>{
+
+                    showToast(
+                        "Abriendo Free Fire...",
+                        "loading"
+                    );
+
+                    setTimeout(()=>{
+
+                        /*
+                         * Ouverture de l'application
+                         * si le système iOS la prend en charge.
+                         */
+                        window.location.href =
+                            "freefireth://";
+
+                    },900);
+
+                },700);
+
+            },2000);
+
+        }
+    );
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+setTimeout(()=>{
+
+    const loading =
+        document.getElementById(
+            "loadingScreen"
+        );
+
+    loading.classList.add(
+        "fade-out"
+    );
+
+    setTimeout(()=>{
+
+        loading.style.display="none";
+
+        if(restoreSession()){
+
+            openApp();
+
+        }else{
+
+            document
+                .getElementById(
+                    "loginScreen"
+                )
+                .classList.remove(
+                    "hidden"
+                );
+
+        }
+
+    },600);
+
+},2200);
 
 </script>
 
